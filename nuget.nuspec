@@ -22,8 +22,8 @@
     <dependencies>
       <dependency id="SpecFlow" version="2.2.0" />
       <dependency id="NUnit" version="3.0.0" />
-      <dependency id="Autofac" version="3.3.0" />
-      <dependency id="Autofac.Configuration" version="3.3.0" />
+      <dependency id="Autofac" version="[3.3.0,3.5.2]" />
+      <dependency id="Autofac.Configuration" version="[3.3.0]" />
       <dependency id="Selenium.WebDriver" version="3.0.0" />
     </dependencies>
   </metadata>

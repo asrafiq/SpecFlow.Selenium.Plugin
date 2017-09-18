@@ -21,8 +21,8 @@ namespace Unickq.SeleniumHelper.Plugins
             var container = e.ObjectContainer;
             var projectSettings = container.Resolve<ProjectSettings>();
             var codeDomHelper = container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language);
-            var generatorProvider = new UnickqNUnitTestGeneratorProvider(codeDomHelper);
-            container.RegisterInstanceAs<IUnitTestGeneratorProvider>(generatorProvider, "UnickqNUnit");
+            var generatorProvider = new TestGeneratorProvider(codeDomHelper);
+            container.RegisterInstanceAs<IUnitTestGeneratorProvider>(generatorProvider, Extensions.Name);
         }
     }
 }

@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace Unickq.SeleniumHelper.Plugins
 {
-    public class UnickqNUnitTestGeneratorProvider : IUnitTestGeneratorProvider
+    public class TestGeneratorProvider : IUnitTestGeneratorProvider
     {
         private const string TestFixtureAttr = "NUnit.Framework.TestFixtureAttribute";
         private const string TestFixtureSetupAttr = "NUnit.Framework.OneTimeSetUp";
@@ -40,7 +40,7 @@ namespace Unickq.SeleniumHelper.Plugins
         private bool _hasBrowser;
         private bool _scenarioSetupMethodsAdded;
 
-        public UnickqNUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
+        public TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
             _codeDomHelper = codeDomHelper;
         }
@@ -245,7 +245,7 @@ namespace Unickq.SeleniumHelper.Plugins
             generationContext.TestClassInitializeMethod.Statements.Add(
                 GenerateCodeSnippetStatement("builder.RegisterModule(new ConfigurationSettingsReader());"));
             generationContext.TestClassInitializeMethod.Statements.Add(
-                GenerateCodeSnippetStatement("this.container = builder.Build();"));
+                GenerateCodeSnippetStatement("container = builder.Build();"));
         }
 
         public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
@@ -295,7 +295,7 @@ namespace Unickq.SeleniumHelper.Plugins
                 GenerateCodeSnippetStatement(
                     "try {" +
                     "System.Threading.Thread.Sleep(50); " +
-                    "this.driver.Quit(); " +
+                    "driver.Quit(); " +
                     "} catch (System.Exception) {}"));
             generationContext.TestCleanupMethod.Statements.Add(
                 GenerateCodeSnippetStatement("driver = null;"));
@@ -303,13 +303,13 @@ namespace Unickq.SeleniumHelper.Plugins
             generationContext.TestCleanupMethod.Statements.Add(
                 GenerateCodeSnippetStatement(
                     "try {" +
-                    "testRunner.ScenarioContext.Remove(\"Driver\");" +
+                    $"testRunner.ScenarioContext.Remove(\"{Extensions.Driver}\");" +
                     "} catch (System.NullReferenceException) {}"));
-            generationContext.TestCleanupMethod.Statements.Add(
-                GenerateCodeSnippetStatement(
-                    "try {" +
-                    "testRunner.ScenarioContext.Remove(\"Container\");" +
-                    "} catch (System.NullReferenceException) {}"));
+//            generationContext.TestCleanupMethod.Statements.Add(
+//                GenerateCodeSnippetStatement(
+//                    "try {" +
+//                    "testRunner.ScenarioContext.Remove(\"Container\");" +
+//                    "} catch (System.NullReferenceException) {}"));
           
             foreach (var field in _fieldsToGenerate)
                 if (!field.Equals("Browser", StringComparison.OrdinalIgnoreCase))
@@ -330,14 +330,14 @@ namespace Unickq.SeleniumHelper.Plugins
                 if (_hasBrowser)
                 {
                     generationContext.ScenarioInitializeMethod.Statements.Add(
-                        GenerateCodeSnippetStatement("if(this.driver != null)"));
+                        GenerateCodeSnippetStatement("if(driver != null)"));
                     generationContext.ScenarioInitializeMethod.Statements.Add(
-                        GenerateCodeSnippetStatement("  testRunner.ScenarioContext.Add(\"Driver\", this.driver);"));
-                    generationContext.ScenarioInitializeMethod.Statements.Add(
-                        GenerateCodeSnippetStatement("if(this.container != null)"));
-                    generationContext.ScenarioInitializeMethod.Statements.Add(
-                        GenerateCodeSnippetStatement(
-                            "  testRunner.ScenarioContext.Add(\"Container\", this.container);"));
+                        GenerateCodeSnippetStatement($"  testRunner.ScenarioContext.Add(\"{Extensions.Driver}\", driver);"));
+//                    generationContext.ScenarioInitializeMethod.Statements.Add(
+//                        GenerateCodeSnippetStatement("if(container != null)"));
+//                    generationContext.ScenarioInitializeMethod.Statements.Add(
+//                        GenerateCodeSnippetStatement(
+//                            "  testRunner.ScenarioContext.Add(\"Container\", container);"));
                 }
                 foreach (var field in _fieldsToGenerate)
                     if (!field.Equals("Browser", StringComparison.OrdinalIgnoreCase))
@@ -393,7 +393,7 @@ namespace Unickq.SeleniumHelper.Plugins
                     if (paramName.Equals("browser", StringComparison.OrdinalIgnoreCase))
                         initializeSelenium.Statements.Add(
                             GenerateCodeSnippetStatement(
-                                "this.driver = this.container.ResolveNamed<OpenQA.Selenium.IWebDriver>(" +
+                                "driver = container.ResolveNamed<OpenQA.Selenium.IWebDriver>(" +
                                 paramName + ");"));
                     else
                         initializeSelenium.Statements.Add(

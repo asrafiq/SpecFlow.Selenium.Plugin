@@ -36,7 +36,7 @@ namespace Example.Features
         {
             var builder = new ContainerBuilder();
             builder.RegisterModule(new ConfigurationSettingsReader());
-            this.container = builder.Build();
+            container = builder.Build();
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "f2", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
@@ -58,20 +58,17 @@ namespace Example.Features
         public virtual void ScenarioTearDown()
         {
             try {((Unickq.SeleniumHelper.WebDriverGrid.PaidWebDriver) driver).UpdateTestResult();} catch (System.Exception) {}
-            try {System.Threading.Thread.Sleep(50); this.driver.Quit(); } catch (System.Exception) {}
+            try {System.Threading.Thread.Sleep(50); driver.Quit(); } catch (System.Exception) {}
             driver = null;
             try {testRunner.ScenarioContext.Remove("Driver");} catch (System.NullReferenceException) {}
-            try {testRunner.ScenarioContext.Remove("Container");} catch (System.NullReferenceException) {}
             testRunner.OnScenarioEnd();
         }
         
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
-            if(this.driver != null)
-              testRunner.ScenarioContext.Add("Driver", this.driver);
-            if(this.container != null)
-              testRunner.ScenarioContext.Add("Container", this.container);
+            if(driver != null)
+              testRunner.ScenarioContext.Add("Driver", driver);
         }
         
         public virtual void ScenarioCleanup()
@@ -81,13 +78,16 @@ namespace Example.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Check website title")]
-        [NUnit.Framework.TestCaseAttribute("BrowserStack_Win10_Chrome", "https://translate.google.com/", "Google", null, Category="BrowserStack_Win10_Chrome", TestName="CheckWebsiteTitle with BrowserStack_Win10_Chrome and \"https://translate.google.co" +
-            "m/\" ,\"Google\"")]
+        [NUnit.Framework.TestCaseAttribute("Chrome_local", "https://translate.google.com/", "Google", null, Category="Chrome_local", TestName="CheckWebsiteTitle with Chrome_local and \"https://translate.google.com/\" ,\"Google\"" +
+            "")]
+        [NUnit.Framework.TestCaseAttribute("Chrome_local2", "https://translate.google.com/", "Google", null, Category="Chrome_local2", TestName="CheckWebsiteTitle with Chrome_local2 and \"https://translate.google.com/\" ,\"Google" +
+            "\"")]
         public virtual void CheckWebsiteTitle(string browser, string uRL, string @string, string[] exampleTags)
         {
 InitializeSeleniumBrowser(browser);
             string[] @__tags = new string[] {
-                    "Browser:BrowserStack_Win10_Chrome"};
+                    "Browser:Chrome_local",
+                    "Browser:Chrome_local2"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -101,7 +101,7 @@ InitializeSeleniumBrowser(browser);
         
         private void InitializeSeleniumBrowser(string browser)
         {
-            this.driver = this.container.ResolveNamed<OpenQA.Selenium.IWebDriver>(browser);
+            driver = container.ResolveNamed<OpenQA.Selenium.IWebDriver>(browser);
         }
     }
 }

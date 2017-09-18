@@ -16,7 +16,7 @@ namespace Unickq.SeleniumHelper.Plugins
         private static void RuntimePluginEvents_RegisterGlobalDependencies(object sender, RegisterGlobalDependenciesEventArgs e)
         {
             var runtimeProvider = new NUnitRuntimeProvider();
-            e.ObjectContainer.RegisterInstanceAs<IUnitTestRuntimeProvider>(runtimeProvider, "UnickqNUnit");
+            e.ObjectContainer.RegisterInstanceAs<IUnitTestRuntimeProvider>(runtimeProvider, Extensions.Name);
         }
     }
 }

@@ -4,17 +4,16 @@ using TechTalk.SpecFlow;
 
 namespace Unickq.SeleniumHelper
 {
-    public class SeleniumHelperBinding
+    public class BaseBinding
     {
         protected readonly ScenarioContext ScenarioContext;
         protected readonly IWebDriver Browser;
 
-        protected SeleniumHelperBinding(ScenarioContext scenarioContext)
+        protected BaseBinding(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             ScenarioContext = scenarioContext;
-            Browser = scenarioContext.Get<IWebDriver>("Driver");
+            Browser = scenarioContext.GetWebDriver();
         }
-
     }
 }

@@ -1,8 +1,9 @@
 ﻿Feature: f2
 
-#@Browser:Chrome_local
+@Browser:Chrome_local
+@Browser:Chrome_local2
 #@Browser:Firefox_local
-@Browser:BrowserStack_Win10_Chrome
+#@Browser:BrowserStack_Win10_Chrome
 #@Browser:Cbt_Win10_Chrome
 #@Browser:TestingBot_ElCapitan_Safari
 #@Browser:SauceLabs_Win7_Firefox
